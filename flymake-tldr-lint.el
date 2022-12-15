@@ -40,14 +40,6 @@
   "The name of the `tldr-lint' executable."
   :type 'string)
 
-(defcustom flymake-tldr-lint-use-file nil
-  "When non-nil, send the contents of the file on disk to tldr-lint.
-Otherwise, send the contents of the buffer, whether they have been
-saved or not.
-Setting this variable to non-nil may yield slightly quicker syntax
-checks on very large files."
-  :type 'boolean)
-
 (defvar-local flymake-tldr-lint--proc nil)
 
 (defun flymake-tldr-lint--backend (report-fn &rest _args)
@@ -100,10 +92,7 @@ Check for problems, then call REPORT-FN with results."
                        finally (funcall report-fn diags)))
                   (flymake-log :warning "Canceling obsolete check %s"
                                proc))
-              (kill-buffer (process-buffer proc)))))))
-      (unless flymake-tldr-lint-use-file
-        (process-send-region flymake-tldr-lint--proc (point-min) (point-max))
-        (process-send-eof flymake-tldr-lint--proc)))))
+              (kill-buffer (process-buffer proc))))))))))
 
 ;;;###autoload
 (defun flymake-tldr-lint-load ()
