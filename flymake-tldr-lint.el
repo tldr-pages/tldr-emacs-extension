@@ -36,8 +36,6 @@
   :prefix "flymake-tldr-lint-"
   :group 'tools)
 
-(define-obsolete-variable-alias 'flymake-tldr-lint-path 'flymake-tldr-lint-program "2022-03-08")
-
 (defcustom flymake-tldr-lint-program "tldr-lint"
   "The name of the `tldr-lint' executable."
   :type 'string)
@@ -48,11 +46,6 @@ Otherwise, send the contents of the buffer, whether they have been
 saved or not.
 Setting this variable to non-nil may yield slightly quicker syntax
 checks on very large files."
-  :type 'boolean)
-
-(defcustom flymake-tldr-lint-allow-external-files nil
-  "When non-nil, allow tldr-lint to source external files with the '-x' parameter.
-Otherwise, external files won't be sourced."
   :type 'boolean)
 
 (defvar-local flymake-tldr-lint--proc nil)
