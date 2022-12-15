@@ -25,7 +25,7 @@
 ;;   https://www.gnu.org/software/emacs/manual/html_node/flymake/An-annotated-example-backend.html
 ;;
 ;; Usage:
-;;   (markdown-hook 'sh-mode-hook 'flymake-tldr-lint-load)
+;;   (add-hook 'markdown-mode-hook 'flymake-tldr-lint-load)
 
 ;;; Code:
 
