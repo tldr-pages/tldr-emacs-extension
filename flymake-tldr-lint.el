@@ -32,30 +32,36 @@
 (require 'flymake)
 
 (defgroup flymake-tldr-lint nil
-  "TlDr backend for Flymake."
+  "tldr-lint backend for Flymake."
   :prefix "flymake-tldr-lint-"
   :group 'tools)
 
+(define-obsolete-variable-alias 'flymake-tldr-lint-path 'flymake-tldr-lint-program "2022-03-08")
+
 (defcustom flymake-tldr-lint-program "tldr-lint"
-  "The name of the `tldr-lint` executable."
+  "The name of the `tldr-lint' executable."
   :type 'string)
 
 (defcustom flymake-tldr-lint-use-file nil
   "When non-nil, send the contents of the file on disk to tldr-lint.
 Otherwise, send the contents of the buffer, whether they have been
 saved or not.
-
 Setting this variable to non-nil may yield slightly quicker syntax
 checks on very large files."
+  :type 'boolean)
+
+(defcustom flymake-tldr-lint-allow-external-files nil
+  "When non-nil, allow tldr-lint to source external files with the '-x' parameter.
+Otherwise, external files won't be sourced."
   :type 'boolean)
 
 (defvar-local flymake-tldr-lint--proc nil)
 
 (defun flymake-tldr-lint--backend (report-fn &rest _args)
-  "TlDr backend for Flymake.
+  "tldr-lint backend for Flymake.
 Check for problems, then call REPORT-FN with results."
   (unless (executable-find flymake-tldr-lint-program)
-    (error "Could not find 'tldr-lint' executable"))
+    (error "Could not find tldr-lint executable"))
 
   (when (process-live-p flymake-tldr-lint--proc)
     (kill-process flymake-tldr-lint--proc)
@@ -71,7 +77,7 @@ Check for problems, then call REPORT-FN with results."
         :name "tldr-lint-flymake" :noquery t :connection-type 'pipe
         :buffer (generate-new-buffer " *tldr-lint-flymake*")
         :command (remove nil (list flymake-tldr-lint-program
-                       (if flymake-tldr-lint-use-file filename "-")))
+                       filename))
         :sentinel
         (lambda (proc _event)
           (when (eq 'exit (process-status proc))
@@ -83,12 +89,12 @@ Check for problems, then call REPORT-FN with results."
                        while (search-forward-regexp
                               "^.+?:\\([0-9]+\\): \\(.*\\)$"
                               nil t)
-		                   for severity = "error"
+		               for severity = "error"
                        for msg = (match-string 2)
                        for (beg . end) = (flymake-diag-region
                                           source
                                           (string-to-number (match-string 1))
-					                                (string-to-number (+ (match-string 1) 2)))
+					                      (+ 1 (string-to-number (match-string 1))))
                        for type = (cond ((string= severity "note") :note)
 					                    ((string= severity "warning") :warning)
 					                    (t :error))
@@ -108,8 +114,7 @@ Check for problems, then call REPORT-FN with results."
 
 ;;;###autoload
 (defun flymake-tldr-lint-load ()
-  "Add the TlDr backend into Flymake's diagnostic functions list."
+  "Add the tldr-lint backend into Flymake's diagnostic functions list."
   (add-hook 'flymake-diagnostic-functions 'flymake-tldr-lint--backend nil t))
 
 (provide 'flymake-tldr-lint)
-;;; flymake-tldr-lint.el ends here
