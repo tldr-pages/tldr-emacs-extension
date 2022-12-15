@@ -88,7 +88,7 @@ Check for problems, then call REPORT-FN with results."
                        for (beg . end) = (flymake-diag-region
                                           source
                                           (string-to-number (match-string 1))
-					                                (string-to-number (+ (match-string 2) 2)))
+					                                (string-to-number (+ (match-string 1) 2)))
                        for type = (cond ((string= severity "note") :note)
 					                    ((string= severity "warning") :warning)
 					                    (t :error))
