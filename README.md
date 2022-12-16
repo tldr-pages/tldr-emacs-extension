@@ -11,7 +11,7 @@
 - [ ] Code snippets
 - [ ] Code actions
 
-![image](https://user-images.githubusercontent.com/42812113/207983063-03efd5da-eed9-4c52-8913-8ae2e0a95a9f.png)
+![image](./assets/screenshot.png)
 
 ## Installation
 
