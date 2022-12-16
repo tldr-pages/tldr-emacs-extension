@@ -4,6 +4,7 @@
 
 - `tldr-lint` installed
 - `emacs 27.1` higher
+- `yasnippet` (optional, if snippets must be enabled)
 
 ## Features
 
