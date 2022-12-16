@@ -9,7 +9,7 @@
 ## Features
 
 - [x] Code linting
-- [ ] Code snippets
+- [x] Code snippets
 - [ ] Code actions
 
 ![image](./assets/screenshot.png)
