@@ -1,0 +1,4 @@
+# name: {{argument}}
+# uuid: tldr-a
+# --
+{{argument}}
