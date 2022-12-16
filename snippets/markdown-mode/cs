@@ -1,0 +1,4 @@
+# name: {{path/to/command1 path/to/command2 ...}}
+# uuid: tldr-cs
+# --
+{{path/to/command1 path/to/command2 ...}}
