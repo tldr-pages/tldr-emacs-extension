@@ -74,15 +74,11 @@ Check for problems, then call REPORT-FN with results."
                        while (search-forward-regexp
                               "^.+?:\\([0-9]+\\): \\(.*\\)$"
                               nil t)
-		               for severity = "error"
                        for msg = (match-string 2)
                        for (beg . end) = (flymake-diag-region
                                           source
-                                          (string-to-number (match-string 1))
-					                      (+ 1 (string-to-number (match-string 1))))
-                       for type = (cond ((string= severity "note") :note)
-					                    ((string= severity "warning") :warning)
-					                    (t :error))
+                                          (string-to-number (match-string 1)) 1)
+                       for type = :error
                        collect (flymake-make-diagnostic source
                                                         beg
                                                         end
