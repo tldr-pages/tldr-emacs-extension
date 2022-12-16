@@ -1,0 +1,4 @@
+# name: {{path/to/file_or_directory}}
+# uuid: tldr-fod
+# --
+{{path/to/file_or_directory}}
