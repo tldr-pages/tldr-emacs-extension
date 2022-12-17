@@ -14,6 +14,8 @@
 
 ![image](./assets/screenshot.png)
 
+![image](./assets/settings-screenshotpng.png)
+
 ## Installation
 
 ### Copy-paste plugin script contents to `~/.emacs` while enabling lexical-binding
