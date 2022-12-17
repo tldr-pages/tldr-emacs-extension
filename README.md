@@ -81,6 +81,107 @@ To speed up fixing TlDr pages several examples provided for each code fix down b
 - Action: `tldr-correct-broken-ranges`
   Input: `command {{1-10}}`
   Result: `command {{1..10}}`
+- Action: `tldr-correct-broken-long-option-argument`
+  Input: `command --option {{option}}`
+  Result: `command --option {{any}}`
+- Action: `tldr-convert-long-option-space-separated`
+  Input: `command --option={{any}}`
+  Result: `command --option {{any}}`
+- Action: `tldr-convert-long-option-equal-sign-separated`
+  Input: `command --option {{any}}`
+  Result: `command --option={{any}}`
+- Action: `tldr-remove-broken-all`
+- Action: `tldr-correct-broken-all`
+
+⚠️ Note that all actions are regex-based substitutions. If you need more smart behaviour use TlDr extensions for another editor.
+
+### Actions in action
+
+For instace we have the following `tar` page:
+
+```md
+# tar
+
+> Archiving utility.
+> Often combined with a compression method, such as gzip or bzip2.
+> More information: <https://www.gnu.org/software/tar>.
+
+- [c]reate an archive and write it to a [f]ile:
+
+`tar cf {{target.tar}} {{file1}} {{file2}} {{file3}}`
+
+- [c]reate a g[z]ipped archive and write it to a [f]ile:
+
+`tar czf {{target.tar.gz}} {{file1}} {{file2}} {{file3}}`
+
+- [c]reate a g[z]ipped archive from a directory using relative paths:
+
+`tar czf {{target.tar.gz}} --directory={{path/to/directory}} .`
+
+- E[x]tract a (compressed) archive [f]ile into the current directory [v]erbosely:
+
+`tar xvf {{source.tar[.gz|.bz2|.xz]}}`
+
+- E[x]tract a (compressed) archive [f]ile into the target directory:
+
+`tar xf {{source.tar[.gz|.bz2|.xz]}} --directory={{path/to/directory}}`
+
+- [c]reate a compressed archive and write it to a [f]ile, using [a]rchive suffix to determine the compression program:
+
+`tar caf {{target.tar.xz}} {{file1}} {{file2}} {{file3}}`
+
+- Lis[t] the contents of a tar [f]ile [v]erbosely:
+
+`tar tvf {{source.tar}}`
+
+- E[x]tract files matching a pattern from an archive [f]ile:
+
+`tar xf {{source.tar}} --wildcards "{{*.html}}"`
+```
+
+To fix all fixable issues at once we can use `M-x tldr-correct-broken-all` command. The result is as follows:
+
+```md
+# tar
+
+> Archiving utility.
+> Often combined with a compression method, such as gzip or bzip2.
+> More information: <https://www.gnu.org/software/tar>.
+
+- [c]reate an archive and write it to a [f]ile:
+
+`tar cf {{target.tar}} {{path/to/file1 path/to/file2 ...}}`
+
+- [c]reate a g[z]ipped archive and write it to a [f]ile:
+
+`tar czf {{target.tar.gz}} {{path/to/file1 path/to/file2 ...}}`
+
+- [c]reate a g[z]ipped archive from a directory using relative paths:
+
+`tar czf {{target.tar.gz}} --directory={{path/to/directory}} .`
+
+- E[x]tract a (compressed) archive [f]ile into the current directory [v]erbosely:
+
+`tar xvf {{source.tar[.gz|.bz2|.xz]}}`
+
+- E[x]tract a (compressed) archive [f]ile into the target directory:
+
+`tar xf {{source.tar[.gz|.bz2|.xz]}} --directory={{path/to/directory}}`
+
+- [c]reate a compressed archive and write it to a [f]ile, using [a]rchive suffix to determine the compression program:
+
+`tar caf {{target.tar.xz}} {{path/to/file1 path/to/file2 ...}}`
+
+- Lis[t] the contents of a tar [f]ile [v]erbosely:
+
+`tar tvf {{source.tar}}`
+
+- E[x]tract files matching a pattern from an archive [f]ile:
+
+`tar xf {{source.tar}} --wildcards "{{*.html}}"`
+```
+
+`{{target.tar}}` placeholder and similar ones were not fixed as extension didn't recognized them as path placeholders.
 
 ## Settings
 
