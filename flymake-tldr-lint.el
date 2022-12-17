@@ -46,6 +46,102 @@
 
 (defvar-local flymake-tldr-lint--proc nil)
 
+(defun replace-regexp-entire-buffer (pattern replacement)
+  "Perform regular-expression replacement throughout buffer."
+  (save-excursion
+    (goto-char (point-min))
+    (while (re-search-forward pattern nil t)
+      (replace-match replacement))))
+
+(defun tldr-remove-broken-ellipsis()
+  "Remove {{...}} placeholders in the current buffer."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (replace-regexp-entire-buffer "[ ]*{{\\.\\{3\\}}}[ ]*" "")
+    (message "Save file to update list of TlDr errors")
+  )
+)
+
+(defun tldr-remove-broken-numbers()
+  "Replace {{placeholder_number}} placeholders with {{placeholder}} in the current buffer."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (replace-regexp-entire-buffer "{{\\([^{}_]+\\)_+\\(?:[0-9]+\\)}}" "{{\\1}}")
+    (message "Save file to update list of TlDr errors")
+  )
+)
+
+(defun tldr-remove-broken-files()
+  "Remove {{file}}, {{filename}}, and {{file_name}} placeholders in the current buffer.
+Trailing numbers are respected too."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (replace-regexp-entire-buffer "[ ]*{{file_?\\(?:name\\)?\\(?:[0-9]+\\)}}[ ]*" "")
+    (message "Save file to update list of TlDr errors")
+  )
+)
+
+(defun tldr-remove-broken-directories()
+  "Remove {{dir}}, {{dirname}}, {{dir_name}}, {{directory}}, {{directoryname}}, and {{directory_name}} placeholders in the current buffer.
+Trailing numbers are respected too."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (replace-regexp-entire-buffer "[ ]*{{dir\\(?:ectory\\)?_?\\(?:name\\)?\\(?:[0-9]+\\)}}[ ]*" "")
+    (message "Save file to update list of TlDr errors")
+  )
+)
+
+(defun tldr-correct-broken-ellipsis()
+  "Replace {{placeholdernumber1}} {{placeholdernumber2}} ... placeholders with {{placeholdernumber1 placeholdernumber2 ...}} in the current buffer."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (replace-regexp-entire-buffer "{{\\([^{}]+\\)[0-9]+}}\\([ ]+\\(?:{{\\1[0-9]+}}\\)\\)+" "{{\\11 \\12 ...}}")
+    (message "Save file to update list of TlDr errors")
+  )
+)
+
+(defun tldr-correct-broken-numbers()
+  "Replace {{placeholder_number}} placeholders with {{placeholdernumber}} in the current buffer."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (replace-regexp-entire-buffer "{{\\([^{}_]+\\)_+\\([0-9]+\\)}}" "{{\\1\\2}}")
+    (message "Save file to update list of TlDr errors")
+  )
+)
+
+(defun tldr-correct-broken-files()
+  "Replace {{file}}, {{filename}}, and {{file_name}} placeholders with {{path/to/file}} in the current buffer.
+Trailing numbers are respected too."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (replace-regexp-entire-buffer "{{file_?\\(?:name\\)?\\([0-9]+\\)}}" "{{path/to/file\\1}}")
+    (message "Save file to update list of TlDr errors")
+  )
+)
+
+(defun tldr-correct-broken-directories()
+  "Replace {{dir}}, {{dirname}}, {{dir_name}}, {{directory}}, {{directoryname}}, and {{directory_name}} placeholders with {{path/to/directory}} in the current buffer.
+Trailing numbers are respected too."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (replace-regexp-entire-buffer "{{dir\\(?:ectory\\)?_?\\(?:name\\)?\\([0-9]+\\)}}" "{{path/to/directory\\1}}")
+    (message "Save file to update list of TlDr errors")
+  )
+)
+
+(defun tldr-correct-broken-ranges()
+  "Replace {{from-to}} placeholders with {{from..to}} in the current buffer.
+If `from` or `to` is missing then it's replaced with negative or positive infinity respectively."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (replace-regexp-entire-buffer "{{\\([0-9]+\\)-+\\([0-9]+\\)}}" "{{\\1..\\2}}")
+    (replace-regexp-entire-buffer "{{-+\\([0-9]+\\)}}" "{{-infinity..\\1}}")
+    (replace-regexp-entire-buffer "{{\\([0-9]+\\)-+}}" "{{\\1..infinity}}")
+    (replace-regexp-entire-buffer "{{-+}}" "{{-infinity..infinity}}")
+    (message "Save file to update list of TlDr errors")
+  )
+)
+
 (defun flymake-tldr-lint--backend (report-fn &rest _args)
   "tldr-lint backend for Flymake.
 Check for problems, then call REPORT-FN with results."
