@@ -4,11 +4,12 @@
 
 - `tldr-lint` installed
 - `emacs 27.1` higher
+- `yasnippet` (optional, if snippets must be enabled)
 
 ## Features
 
 - [x] Code linting
-- [ ] Code snippets
+- [x] Code snippets
 - [ ] Code actions
 
 ![image](./assets/screenshot.png)

@@ -1,0 +1,4 @@
+# name: {{command}}
+# uuid: tldr-c
+# --
+{{command}}
