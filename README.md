@@ -50,6 +50,35 @@ Example `~/.emacs` config:
 
 - Use `M-x flymake-mode RET` (view the next chapter below to understand how to interpret `M-x` and `RET`)
 
+## Starting fixing
+
+To speed up fixing TlDr pages several examples provided for each code fix down below:
+
+- Action: `tldr-remove-broken-ellipsis`
+  Input: `command {{...}}`
+  Result: `command`
+- Action: `tldr-remove-broken-numbers`
+  Input: `command {{path/to/file_1}}`
+  Result: `command {{path/to/file}}`
+- Action: `tldr-remove-broken-files`
+  Input: `command {{file}}`
+  Result: `command`
+- Action: `tldr-remove-broken-directories`
+  Input: `command {{dir}}`
+  Result: `command`
+- Action: `tldr-correct-broken-ellipsis`
+  Input: `command {{path/to/file1}} {{path/to/file2}} {{path/to/file3}}`
+  Result: `command {{path/to/file1 path/to/file2 ...}}`
+- Action: `tldr-correct-broken-numbers`
+  Input: `command {{path/to/file_1}}`
+  Result: `command {{path/to/file1}}`
+- Action: `tldr-correct-broken-files`
+  Input: `command {{file}}`
+  Result: `command {{path/to/file}}`
+- Action: `tldr-correct-broken-directories`
+  Input: `command {{dir}}`
+  Result: `command {{path/to/directory}}`
+
 ## Settings
 
 To change settings `M-x customize-option RET {{flymake-tldr-lint-program|flymake-tldr-lint-ignored}} RET` can be used where:
