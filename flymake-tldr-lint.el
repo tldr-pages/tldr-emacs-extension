@@ -91,6 +91,15 @@ Trailing numbers are respected too."
   )
 )
 
+(defun tldr-remove-broken-all()
+  "Apply all `tldr-remove-*` actions."
+  (interactive)
+  (tldr-remove-broken-ellipsis)
+  (tldr-remove-broken-numbers)
+  (tldr-remove-broken-files)
+  (tldr-remove-broken-directories)
+)
+
 (defun tldr-correct-broken-ellipsis()
   "Replace {{placeholdernumber1}} {{placeholdernumber2}} ... placeholders with {{placeholdernumber1 placeholdernumber2 ...}} in the current buffer."
   (interactive)
@@ -149,6 +158,17 @@ If `from` or `to` is missing then it's replaced with negative or positive infini
     (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\\([\"']?\\)\\1\\2" "--\\1 \\2any\\2")
     (message "Save file to update list of TlDr errors")
   )
+)
+
+(defun tldr-correct-broken-all()
+  "Apply all `tldr-correct-*` actions."
+  (interactive)
+  (tldr-correct-broken-numbers)
+  (tldr-correct-broken-files)
+  (tldr-correct-broken-directories)
+  (tldr-correct-broken-ranges)
+  (tldr-correct-broken-ellipsis)
+  (tldr-correct-broken-long-option-argument)
 )
 
 (defun tldr-convert-long-option-space-separated()
