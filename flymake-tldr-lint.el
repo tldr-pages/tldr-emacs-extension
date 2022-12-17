@@ -151,6 +151,28 @@ If `from` or `to` is missing then it's replaced with negative or positive infini
   )
 )
 
+(defun tldr-convert-long-option-space-separated()
+  "Replace --option=value syntax with --option value any in the current buffer."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)=\\([^\"' ]+\\)" "--\\1 \\2")
+    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)=\"\\([^\"]+\\)\"" "--\\1 \"\\2\"")
+    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)='\\([^\"]+\\)'" "--\\1 '\\2'")
+    (message "Save file to update list of TlDr errors")
+  )
+)
+
+(defun tldr-convert-long-option-equal-sign-separated()
+  "Replace --option value syntax with --option=value any in the current buffer."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\\([^\"' ]+\\)" "--\\1=\\2")
+    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\"\\([^\"]+\\)\"" "--\\1=\"\\2\"")
+    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+'\\([^\"]+\\)'" "--\\1='\\2'")
+    (message "Save file to update list of TlDr errors")
+  )
+)
+
 (defun flymake-tldr-lint--backend (report-fn &rest _args)
   "tldr-lint backend for Flymake.
 Check for problems, then call REPORT-FN with results."
