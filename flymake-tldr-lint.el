@@ -137,7 +137,7 @@ If `from` or `to` is missing then it's replaced with negative or positive infini
     (replace-regexp-entire-buffer "{{\\([0-9]+\\)-+\\([0-9]+\\)}}" "{{\\1..\\2}}")
     (replace-regexp-entire-buffer "{{-+\\([0-9]+\\)}}" "{{-infinity..\\1}}")
     (replace-regexp-entire-buffer "{{\\([0-9]+\\)-+}}" "{{\\1..infinity}}")
-    (replace-regexp-entire-buffer "{{-+}}" "{{-infinity..infinity}}")
+    (replace-regexp-entire-buffer "{{-+}}" "{{any}}")
     (message "Save file to update list of TlDr errors")
   )
 )
