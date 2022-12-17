@@ -91,6 +91,8 @@ To speed up fixing TlDr pages several examples provided for each code fix down b
   Input: `command --option {{any}}`
   Result: `command --option={{any}}`
 
+⚠️ Note that all actions are regex-based substitutions. If you need more smart behaviour use TlDr extensions for another editor.
+
 ## Settings
 
 To change settings `M-x customize-option RET {{flymake-tldr-lint-program|flymake-tldr-lint-ignored}} RET` can be used where:
