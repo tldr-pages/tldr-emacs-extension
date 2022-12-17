@@ -81,6 +81,15 @@ To speed up fixing TlDr pages several examples provided for each code fix down b
 - Action: `tldr-correct-broken-ranges`
   Input: `command {{1-10}}`
   Result: `command {{1..10}}`
+- Action: `tldr-correct-broken-long-option-argument`
+  Input: `command --option {{option}}`
+  Result: `command --option {{any}}`
+- Action: `tldr-convert-long-option-space-separated`
+  Input: `command --option={{any}}`
+  Result: `command --option {{any}}`
+- Action: `tldr-convert-long-option-equal-sign-separated`
+  Input: `command --option {{any}}`
+  Result: `command --option={{any}}`
 
 ## Settings
 
