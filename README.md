@@ -61,3 +61,10 @@ Settings:
 
 - `flymake-tldr-lint-program` (**default**: `"tldr-lint"`) - executable name
 - `flymake-tldr-lint-ignored` (**default**: `""`) - list of ignored errors (as a delimiter any character can be used `TLDR004 TLDR006` or `TLDR004,TLDR006`)
+
+## FAQ
+
+- Can I remove broken placeholders automatically?
+  This can be done via all `tldr-remove-broken-*` actions.
+- Can I fix broken placeholders automatically?
+  This can be done via all `tldr-correct-broken-*` actions.
