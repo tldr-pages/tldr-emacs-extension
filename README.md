@@ -12,9 +12,9 @@
 - [x] Code snippets
 - [ ] Code actions
 
-![image](./assets/screenshot.png)
+![linting](./assets/screenshot.png)
 
-![image](./assets/settings-screenshotpng.png)
+![settings](./assets/settings-screenshot.png)
 
 ## Installation
 
