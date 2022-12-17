@@ -41,7 +41,7 @@
   :type 'string)
 
 (defcustom flymake-tldr-lint-ignored ""
-  "Comma separated list of ignored errors."
+  "List of ignored errors."
   :type 'string)
 
 (defvar-local flymake-tldr-lint--proc nil)
