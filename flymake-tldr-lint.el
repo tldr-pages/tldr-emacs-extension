@@ -40,6 +40,10 @@
   "The name of the `tldr-lint' executable."
   :type 'string)
 
+(defcustom flymake-tldr-lint-ignored ""
+  "Comma separated list of ignored errors."
+  :type 'string)
+
 (defvar-local flymake-tldr-lint--proc nil)
 
 (defun flymake-tldr-lint--backend (report-fn &rest _args)
@@ -72,19 +76,22 @@ Check for problems, then call REPORT-FN with results."
                       (goto-char (point-min))
                       (cl-loop
                        while (search-forward-regexp
-                              "^.+?:\\([0-9]+\\): \\(.*\\)$"
+                              "^.+?:\\([0-9]+\\): \\(TLDR[0-9]+\\) \\(.*\\)$"
                               nil t)
-                       for msg = (match-string 2)
+                       for id = (match-string 2)
+                       for msg = (match-string 3)
                        for (beg . end) = (flymake-diag-region
                                           source
                                           (string-to-number (match-string 1)) 1)
                        for type = :error
+                       if (null (string-match (regexp-quote id) flymake-tldr-lint-ignored))
                        collect (flymake-make-diagnostic source
                                                         beg
                                                         end
                                                         type
-                                                        msg)
+                                                        (format "[%s] %s" id msg))
                        into diags
+                       
                        finally (funcall report-fn diags)))
                   (flymake-log :warning "Canceling obsolete check %s"
                                proc))
