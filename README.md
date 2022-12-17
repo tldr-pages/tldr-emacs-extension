@@ -78,6 +78,9 @@ To speed up fixing TlDr pages several examples provided for each code fix down b
 - Action: `tldr-correct-broken-directories`
   Input: `command {{dir}}`
   Result: `command {{path/to/directory}}`
+- Action: `tldr-correct-broken-ranges`
+  Input: `command {{1-10}}`
+  Result: `command {{1..10}}`
 
 ## Settings
 
