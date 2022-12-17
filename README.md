@@ -181,6 +181,8 @@ To fix all fixable issues at once we can use `M-x tldr-correct-broken-all` comma
 `tar xf {{source.tar}} --wildcards "{{*.html}}"`
 ```
 
+`{{target.tar}}` placeholder and similar ones were not fixed as extension didn't recognized them as path placeholders.
+
 ## Settings
 
 To change settings `M-x customize-option RET {{flymake-tldr-lint-program|flymake-tldr-lint-ignored}} RET` can be used where:
