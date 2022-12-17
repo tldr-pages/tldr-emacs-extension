@@ -12,7 +12,9 @@
 - [x] Code snippets
 - [ ] Code actions
 
-![image](./assets/screenshot.png)
+![linting](./assets/screenshot.png)
+
+![settings](./assets/settings-screenshot.png)
 
 ## Installation
 
@@ -26,73 +28,7 @@ Example `~/.emacs` config:
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-(require 'flymake)
-
-(defgroup flymake-tldr-lint nil
-  "tldr-lint backend for Flymake."
-  :prefix "flymake-tldr-lint-"
-  :group 'tools)
-
-(defcustom flymake-tldr-lint-program "tldr-lint"
-  "The name of the `tldr-lint' executable."
-  :type 'string)
-
-(defvar-local flymake-tldr-lint--proc nil)
-
-(defun flymake-tldr-lint--backend (report-fn &rest _args)
-  "tldr-lint backend for Flymake.
-Check for problems, then call REPORT-FN with results."
-  (unless (executable-find flymake-tldr-lint-program)
-    (error "Could not find tldr-lint executable"))
-
-  (when (process-live-p flymake-tldr-lint--proc)
-    (kill-process flymake-tldr-lint--proc)
-    (setq flymake-tldr-lint--proc nil))
-
-  (let* ((source (current-buffer))
-	     (filename (buffer-file-name source)))
-    (save-restriction
-      (widen)
-      (setq
-       flymake-tldr-lint--proc
-       (make-process
-        :name "tldr-lint-flymake" :noquery t :connection-type 'pipe
-        :buffer (generate-new-buffer " *tldr-lint-flymake*")
-        :command (remove nil (list flymake-tldr-lint-program
-                       filename))
-        :sentinel
-        (lambda (proc _event)
-          (when (eq 'exit (process-status proc))
-            (unwind-protect
-                (if (with-current-buffer source (eq proc flymake-tldr-lint--proc))
-                    (with-current-buffer (process-buffer proc)
-                      (goto-char (point-min))
-                      (cl-loop
-                       while (search-forward-regexp
-                              "^.+?:\\([0-9]+\\): \\(.*\\)$"
-                              nil t)
-                       for msg = (match-string 2)
-                       for (beg . end) = (flymake-diag-region
-                                          source
-                                          (string-to-number (match-string 1)) 1)
-                       for type = :error
-                       collect (flymake-make-diagnostic source
-                                                        beg
-                                                        end
-                                                        type
-                                                        msg)
-                       into diags
-                       finally (funcall report-fn diags)))
-                  (flymake-log :warning "Canceling obsolete check %s"
-                               proc))
-              (kill-buffer (process-buffer proc))))))))))
-
-;;;###autoload
-(defun flymake-tldr-lint-load ()
-  "Add the tldr-lint backend into Flymake's diagnostic functions list."
-  (add-hook 'flymake-diagnostic-functions 'flymake-tldr-lint--backend nil t))
-
-(provide 'flymake-tldr-lint)
+;; The extension file content with all comments removed can be placed here.
 
 (add-hook 'markdown-mode-hook 'flymake-tldr-lint-load)
 
@@ -112,8 +48,16 @@ Check for problems, then call REPORT-FN with results."
 
 ## Starting linting
 
-- Use `M-x flymake-mode RET` (press `Alt` with `x` and then type `flymake-mode` and press `Enter`)
+- Use `M-x flymake-mode RET` (view the next chapter below to understand how to interpret `M-x` and `RET`)
 
 ## Settings
 
-- `flymake-tldr-lint-program` (**default**: `tldr-lint`) - executable name
+To change settings `M-x customize-option RET {{flymake-tldr-lint-program|flymake-tldr-lint-ignored}} RET` can be used where:
+
+- `M-x` is `Alt` with `x`
+- `RET` is `Enter`.
+
+Settings:
+
+- `flymake-tldr-lint-program` (**default**: `"tldr-lint"`) - executable name
+- `flymake-tldr-lint-ignored` (**default**: `""`) - list of ignored errors (as a delimiter any character can be used `TLDR004 TLDR006` or `TLDR004,TLDR006`)
