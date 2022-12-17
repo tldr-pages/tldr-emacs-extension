@@ -4,7 +4,7 @@
 
 ;; Copyright (c) 2022 Emily Grace Seville <EmilySeville7cfg@gmail.com>
 ;; Package-Version: 0.1
-;; Package-Requires: ((emacs "26"))
+;; Package-Requires: ((emacs "27.1"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -96,3 +96,5 @@ Check for problems, then call REPORT-FN with results."
   (add-hook 'flymake-diagnostic-functions 'flymake-tldr-lint--backend nil t))
 
 (provide 'flymake-tldr-lint)
+
+;;; flymake-tldr-lint.el ends here
