@@ -50,7 +50,7 @@ Example `~/.emacs` config:
 
 ## Settings
 
-To change settings `M-x customize-option RET flymake-tldr-lint-ignored RET` can be used where:
+To change settings `M-x customize-option RET {{flymake-tldr-lint-program|flymake-tldr-lint-ignored}} RET` can be used where:
 
 - `M-x` is `Alt` with `x`
 - `RET` is `Enter`.
