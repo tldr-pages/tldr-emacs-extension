@@ -10,7 +10,7 @@
 
 - [x] Code linting
 - [x] Code snippets
-- [ ] Code actions
+- [x] Code actions
 
 ![linting](./assets/screenshot.png)
 
