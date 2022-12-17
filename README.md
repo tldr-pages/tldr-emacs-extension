@@ -46,8 +46,16 @@ Example `~/.emacs` config:
 
 ## Starting linting
 
-- Use `M-x flymake-mode RET` (press `Alt` with `x` and then type `flymake-mode` and press `Enter`)
+- Use `M-x flymake-mode RET` (view the next chapter below to understand how to interpret `M-x` and `RET`)
 
 ## Settings
 
-- `flymake-tldr-lint-program` (**default**: `tldr-lint`) - executable name
+To change settings `M-x customize-option RET flymake-tldr-lint-ignored RET` can be used where:
+
+- `M-x` is `Alt` with `x`
+- `RET` is `Enter`.
+
+Settings:
+
+- `flymake-tldr-lint-program` (**default**: `"tldr-lint"`) - executable name
+- `flymake-tldr-lint-ignored` (**default**: `""`) - list of ignored errors (as a delimiter any character can be used `TLDR004 TLDR006` or `TLDR004,TLDR006`)
