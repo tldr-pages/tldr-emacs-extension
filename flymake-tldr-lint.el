@@ -76,7 +76,7 @@
 Trailing numbers are respected too."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "[ ]*{{file_?\\(?:name\\)?\\(?:[0-9]*\\)}}[ ]*" "")
+    (replace-regexp-entire-buffer "[ ]*\\([\"']?\\){{file_?\\(?:name\\)?\\(?:[0-9]*\\)}}\\1[ ]*" "")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -86,7 +86,7 @@ Trailing numbers are respected too."
 Trailing numbers are respected too."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "[ ]*{{dir\\(?:ectory\\)?_?\\(?:name\\)?\\(?:[0-9]*\\)}}[ ]*" "")
+    (replace-regexp-entire-buffer "[ ]*\\([\"']?\\){{dir\\(?:ectory\\)?_?\\(?:name\\)?\\(?:[0-9]*\\)}}\\1[ ]*" "")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -114,7 +114,7 @@ Trailing numbers are respected too."
 Trailing numbers are respected too."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "{{file_?\\(?:name\\)?\\([0-9]*\\)}}" "{{path/to/file\\1}}")
+    (replace-regexp-entire-buffer "\\([\"']?\\){{file_?\\(?:name\\)?\\([0-9]*\\)}}\\1" "{{path/to/file\\2}}")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -124,7 +124,7 @@ Trailing numbers are respected too."
 Trailing numbers are respected too."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "{{dir\\(?:ectory\\)?_?\\(?:name\\)?\\([0-9]*\\)}}" "{{path/to/directory\\1}}")
+    (replace-regexp-entire-buffer "\\([\"']?\\){{dir\\(?:ectory\\)?_?\\(?:name\\)?\\([0-9]*\\)}}\\1" "{{path/to/directory\\2}}")
     (message "Save file to update list of TlDr errors")
   )
 )
