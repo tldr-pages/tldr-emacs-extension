@@ -68,7 +68,9 @@ placeholders in the current buffer."
 placeholders with {{placeholder}} in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "{{\\([^{}_]+\\)_+\\(?:[0-9]+\\)}}" "{{\\1}}")
+    (replace-regexp-entire-buffer
+      "{{\\([^{}_]+\\)_+\\(?:[0-9]+\\)}}"
+      "{{\\1}}")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -79,7 +81,9 @@ placeholders in the current buffer.
 Trailing numbers are respected too."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "[ ]*\\([\"']?\\){{file_?\\(?:name\\)?\\(?:[0-9]*\\)}}\\1[ ]*" "")
+    (replace-regexp-entire-buffer
+      "[ ]*\\([\"']?\\){{file_?\\(?:name\\)?\\(?:[0-9]*\\)}}\\1[ ]*"
+      "")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -91,7 +95,9 @@ placeholders in the current buffer.
 Trailing numbers are respected too."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "[ ]*\\([\"']?\\){{dir\\(?:ectory\\)?_?\\(?:name\\)?\\(?:[0-9]*\\)}}\\1[ ]*" "")
+    (replace-regexp-entire-buffer
+      "[ ]*\\([\"']?\\){{dir\\(?:ectory\\)?_?\\(?:name\\)?\\(?:[0-9]*\\)}}\\1[ ]*"
+      "")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -111,7 +117,9 @@ placeholders with {{placeholdernumber1 placeholdernumber2 ...}}
 in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "{{\\([^{}]+\\)[0-9]+}}\\([ ]+\\(?:{{\\1[0-9]+}}\\)\\)+" "{{\\11 \\12 ...}}")
+    (replace-regexp-entire-buffer
+      "{{\\([^{}]+\\)[0-9]+}}\\([ ]+\\(?:{{\\1[0-9]+}}\\)\\)+"
+      "{{\\11 \\12 ...}}")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -121,7 +129,8 @@ in the current buffer."
 placeholders with {{placeholdernumber}} in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "{{\\([^{}_]+\\)_+\\([0-9]+\\)}}" "{{\\1\\2}}")
+    (replace-regexp-entire-buffer
+      "{{\\([^{}_]+\\)_+\\([0-9]+\\)}}" "{{\\1\\2}}")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -132,7 +141,9 @@ placeholders with {{path/to/file}} in the current buffer.
 Trailing numbers are respected too."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "\\([\"']?\\){{file_?\\(?:name\\)?\\([0-9]*\\)}}\\1" "{{path/to/file\\2}}")
+    (replace-regexp-entire-buffer
+      "\\([\"']?\\){{file_?\\(?:name\\)?\\([0-9]*\\)}}\\1"
+      "{{path/to/file\\2}}")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -144,7 +155,9 @@ placeholders with {{path/to/directory}} in the current buffer.
 Trailing numbers are respected too."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "\\([\"']?\\){{dir\\(?:ectory\\)?_?\\(?:name\\)?\\([0-9]*\\)}}\\1" "{{path/to/directory\\2}}")
+    (replace-regexp-entire-buffer
+      "\\([\"']?\\){{dir\\(?:ectory\\)?_?\\(?:name\\)?\\([0-9]*\\)}}\\1"
+      "{{path/to/directory\\2}}")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -155,10 +168,18 @@ If `from` or `to` is missing then
 it's replaced with negative or positive infinity respectively."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "{{\\([0-9]+\\)-+\\([0-9]+\\)}}" "{{\\1..\\2}}")
-    (replace-regexp-entire-buffer "{{-+\\([0-9]+\\)}}" "{{-infinity..\\1}}")
-    (replace-regexp-entire-buffer "{{\\([0-9]+\\)-+}}" "{{\\1..infinity}}")
-    (replace-regexp-entire-buffer "{{-+}}" "{{any}}")
+    (replace-regexp-entire-buffer
+      "{{\\([0-9]+\\)-+\\([0-9]+\\)}}"
+      "{{\\1..\\2}}")
+    (replace-regexp-entire-buffer
+      "{{-+\\([0-9]+\\)}}"
+      "{{-infinity..\\1}}")
+    (replace-regexp-entire-buffer
+      "{{\\([0-9]+\\)-+}}"
+      "{{\\1..infinity}}")
+    (replace-regexp-entire-buffer
+      "{{-+}}"
+      "{{any}}")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -167,7 +188,9 @@ it's replaced with negative or positive infinity respectively."
   "Replace --option option syntax with --option any in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\\([\"']?\\)\\1\\2" "--\\1 \\2any\\2")
+    (replace-regexp-entire-buffer
+      "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\\([\"']?\\)\\1\\2"
+      "--\\1 \\2any\\2")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -187,9 +210,15 @@ it's replaced with negative or positive infinity respectively."
   "Replace --option=value syntax with --option value any in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)=\\([^\"' ]+\\)" "--\\1 \\2")
-    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)=\"\\([^\"]+\\)\"" "--\\1 \"\\2\"")
-    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)='\\([^\"]+\\)'" "--\\1 '\\2'")
+    (replace-regexp-entire-buffer
+      "--\\([A-Za-z0-9]\\{2,\\}\\)=\\([^\"' ]+\\)"
+      "--\\1 \\2")
+    (replace-regexp-entire-buffer
+      "--\\([A-Za-z0-9]\\{2,\\}\\)=\"\\([^\"]+\\)\""
+      "--\\1 \"\\2\"")
+    (replace-regexp-entire-buffer
+      "--\\([A-Za-z0-9]\\{2,\\}\\)='\\([^\"]+\\)'"
+      "--\\1 '\\2'")
     (message "Save file to update list of TlDr errors")
   )
 )
@@ -198,9 +227,15 @@ it's replaced with negative or positive infinity respectively."
   "Replace --option value syntax with --option=value any in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\\([^\"' ]+\\)" "--\\1=\\2")
-    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\"\\([^\"]+\\)\"" "--\\1=\"\\2\"")
-    (replace-regexp-entire-buffer "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+'\\([^\"]+\\)'" "--\\1='\\2'")
+    (replace-regexp-entire-buffer
+      "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\\([^\"' ]+\\)"
+      "--\\1=\\2")
+    (replace-regexp-entire-buffer
+      "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\"\\([^\"]+\\)\""
+      "--\\1=\"\\2\"")
+    (replace-regexp-entire-buffer
+      "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+'\\([^\"]+\\)'"
+      "--\\1='\\2'")
     (message "Save file to update list of TlDr errors")
   )
 )
