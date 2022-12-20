@@ -46,199 +46,177 @@
 
 (defvar-local flymake-tldr-lint--proc nil)
 
-(defun replace-regexp-entire-buffer (pattern replacement)
+(defun flymake-tldr-lint--replace-regexp-entire-buffer (pattern replacement)
   "Perform regular-expression replacement throughout buffer."
   (save-excursion
     (goto-char (point-min))
     (while (re-search-forward pattern nil t)
       (replace-match replacement))))
 
-(defun tldr-remove-broken-ellipsis()
+(defun flymake-tldr-lint-remove-broken-ellipsis()
   "Remove {{...}}
 placeholders in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer "[ ]*{{\\.\\{3\\}}}[ ]*" "")
-    (message "Save file to update list of TlDr errors")
-  )
-)
-
-(defun tldr-remove-broken-numbers()
-  "Replace {{placeholder_number}}
-placeholders with {{placeholder}} in the current buffer."
-  (interactive)
-  (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer
-      "{{\\([^{}_]+\\)_+\\(?:[0-9]+\\)}}"
-      "{{\\1}}")
-    (message "Save file to update list of TlDr errors")
-  )
-)
-
-(defun tldr-remove-broken-files()
-  "Remove {{file}}, {{filename}}, and {{file_name}}
-placeholders in the current buffer.
-Trailing numbers are respected too."
-  (interactive)
-  (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer
-      "[ ]*\\([\"']?\\){{file_?\\(?:name\\)?\\(?:[0-9]*\\)}}\\1[ ]*"
+    (flymake-tldr-lint--replace-regexp-entire-buffer
+      "[ ]*{{\\.\\{3\\}}}[ ]*"
       "")
     (message "Save file to update list of TlDr errors")
   )
 )
 
-(defun tldr-remove-broken-directories()
+(defun flymake-tldr-lint-remove-broken-numbers()
+  "Replace {{placeholder_number}}
+placeholders with {{placeholder}} in the current buffer."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (flymake-tldr-lint--replace-regexp-entire-buffer
+      "{{\\([^{}_]+\\)_+\\(?:[0-9]+\\)}}"
+      "{{\\1}}")
+    (message "Save file to update list of TlDr errors")))
+
+(defun flymake-tldr-lint-remove-broken-files()
+  "Remove {{file}}, {{filename}}, and {{file_name}}
+placeholders in the current buffer.
+Trailing numbers are respected too."
+  (interactive)
+  (with-current-buffer (current-buffer)
+    (flymake-tldr-lint--replace-regexp-entire-buffer
+      "[ ]*\\([\"']?\\){{file_?\\(?:name\\)?\\(?:[0-9]*\\)}}\\1[ ]*"
+      "")
+    (message "Save file to update list of TlDr errors")))
+
+(defun flymake-tldr-lint-remove-broken-directories()
   "Remove {{dir}}, {{dirname}}, {{dir_name}},
 {{directory}}, {{directoryname}}, and {{directory_name}}
 placeholders in the current buffer.
 Trailing numbers are respected too."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "[ ]*\\([\"']?\\){{dir\\(?:ectory\\)?_?\\(?:name\\)?\\(?:[0-9]*\\)}}\\1[ ]*"
       "")
-    (message "Save file to update list of TlDr errors")
-  )
-)
+    (message "Save file to update list of TlDr errors")))
 
-(defun tldr-remove-broken-all()
+(defun flymake-tldr-lint-remove-broken-all()
   "Apply all `tldr-remove-*` actions."
   (interactive)
-  (tldr-remove-broken-ellipsis)
-  (tldr-remove-broken-numbers)
-  (tldr-remove-broken-files)
-  (tldr-remove-broken-directories)
-)
+  (flymake-tldr-lint-remove-broken-ellipsis)
+  (flymake-tldr-lint-remove-broken-numbers)
+  (flymake-tldr-lint-remove-broken-files)
+  (flymake-tldr-lint-remove-broken-directories))
 
-(defun tldr-correct-broken-ellipsis()
+(defun flymake-tldr-lint-correct-broken-ellipsis()
   "Replace {{placeholdernumber1}} {{placeholdernumber2}} ...
 placeholders with {{placeholdernumber1 placeholdernumber2 ...}}
 in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "{{\\([^{}]+\\)[0-9]+}}\\([ ]+\\(?:{{\\1[0-9]+}}\\)\\)+"
       "{{\\11 \\12 ...}}")
-    (message "Save file to update list of TlDr errors")
-  )
-)
+    (message "Save file to update list of TlDr errors")))
 
-(defun tldr-correct-broken-numbers()
+(defun flymake-tldr-lint-correct-broken-numbers()
   "Replace {{placeholder_number}}
 placeholders with {{placeholdernumber}} in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "{{\\([^{}_]+\\)_+\\([0-9]+\\)}}" "{{\\1\\2}}")
-    (message "Save file to update list of TlDr errors")
-  )
-)
+    (message "Save file to update list of TlDr errors")))
 
-(defun tldr-correct-broken-files()
+(defun flymake-tldr-lint-correct-broken-files()
   "Replace {{file}}, {{filename}}, and {{file_name}}
 placeholders with {{path/to/file}} in the current buffer.
 Trailing numbers are respected too."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "\\([\"']?\\){{file_?\\(?:name\\)?\\([0-9]*\\)}}\\1"
       "{{path/to/file\\2}}")
-    (message "Save file to update list of TlDr errors")
-  )
-)
+    (message "Save file to update list of TlDr errors")))
 
-(defun tldr-correct-broken-directories()
+(defun flymake-tldr-lint-correct-broken-directories()
   "Replace {{dir}}, {{dirname}}, {{dir_name}},
 {{directory}}, {{directoryname}}, and {{directory_name}}
 placeholders with {{path/to/directory}} in the current buffer.
 Trailing numbers are respected too."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "\\([\"']?\\){{dir\\(?:ectory\\)?_?\\(?:name\\)?\\([0-9]*\\)}}\\1"
       "{{path/to/directory\\2}}")
-    (message "Save file to update list of TlDr errors")
-  )
-)
+    (message "Save file to update list of TlDr errors")))
 
-(defun tldr-correct-broken-ranges()
+(defun flymake-tldr-lint-correct-broken-ranges()
   "Replace {{from-to}} placeholders with {{from..to}} in the current buffer.
 If `from` or `to` is missing then
 it's replaced with negative or positive infinity respectively."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "{{\\([0-9]+\\)-+\\([0-9]+\\)}}"
       "{{\\1..\\2}}")
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "{{-+\\([0-9]+\\)}}"
       "{{-infinity..\\1}}")
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "{{\\([0-9]+\\)-+}}"
       "{{\\1..infinity}}")
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "{{-+}}"
       "{{any}}")
-    (message "Save file to update list of TlDr errors")
-  )
-)
+    (message "Save file to update list of TlDr errors")))
 
-(defun tldr-correct-broken-long-option-argument()
+(defun flymake-tldr-lint-correct-broken-long-option-argument()
   "Replace --option option syntax with --option any in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\\([\"']?\\)\\1\\2"
       "--\\1 \\2any\\2")
-    (message "Save file to update list of TlDr errors")
-  )
-)
+    (message "Save file to update list of TlDr errors")))
 
-(defun tldr-correct-broken-all()
+(defun flymake-tldr-lint-correct-broken-all()
   "Apply all `tldr-correct-*` actions."
   (interactive)
-  (tldr-correct-broken-numbers)
-  (tldr-correct-broken-files)
-  (tldr-correct-broken-directories)
-  (tldr-correct-broken-ranges)
-  (tldr-correct-broken-ellipsis)
-  (tldr-correct-broken-long-option-argument)
-)
+  (flymake-tldr-lint-correct-broken-numbers)
+  (flymake-tldr-lint-correct-broken-files)
+  (flymake-tldr-lint-correct-broken-directories)
+  (flymake-tldr-lint-correct-broken-ranges)
+  (flymake-tldr-lint-correct-broken-ellipsis)
+  (flymake-tldr-lint-correct-broken-long-option-argument))
 
-(defun tldr-convert-long-option-space-separated()
+(defun flymake-tldr-lint-convert-long-option-space-separated()
   "Replace --option=value syntax with --option value any in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "--\\([A-Za-z0-9]\\{2,\\}\\)=\\([^\"' ]+\\)"
       "--\\1 \\2")
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "--\\([A-Za-z0-9]\\{2,\\}\\)=\"\\([^\"]+\\)\""
       "--\\1 \"\\2\"")
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "--\\([A-Za-z0-9]\\{2,\\}\\)='\\([^\"]+\\)'"
       "--\\1 '\\2'")
-    (message "Save file to update list of TlDr errors")
-  )
-)
+    (message "Save file to update list of TlDr errors")))
 
-(defun tldr-convert-long-option-equal-sign-separated()
+(defun flymake-tldr-lint-convert-long-option-equal-sign-separated()
   "Replace --option value syntax with --option=value any in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\\([^\"' ]+\\)"
       "--\\1=\\2")
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\"\\([^\"]+\\)\""
       "--\\1=\"\\2\"")
-    (replace-regexp-entire-buffer
+    (flymake-tldr-lint--replace-regexp-entire-buffer
       "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+'\\([^\"]+\\)'"
       "--\\1='\\2'")
-    (message "Save file to update list of TlDr errors")
-  )
-)
+    (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint--backend (report-fn &rest _args)
   "tldr-lint backend for Flymake.
