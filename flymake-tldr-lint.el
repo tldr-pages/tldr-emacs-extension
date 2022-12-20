@@ -3,7 +3,7 @@
 ;; Copyright (c) 2022 Emily Grace Seville <EmilySeville7cfg@gmail.com>
 
 ;; Copyright (c) 2022 Emily Grace Seville <EmilySeville7cfg@gmail.com>
-;; Package-Version: 0.1
+;; Version: 0.1
 ;; Package-Requires: ((emacs "27.1"))
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -27,6 +27,8 @@
 ;; Usage:
 ;;   (add-hook 'markdown-mode-hook 'flymake-tldr-lint-load)
 
+;; URL: https://github.com/tldr-pages/tldr-emacs-extension
+
 ;;; Code:
 
 (require 'flymake)
@@ -47,26 +49,27 @@
 (defvar-local flymake-tldr-lint--proc nil)
 
 (defun flymake-tldr-lint--replace-regexp-entire-buffer (pattern replacement)
-  "Perform regular-expression replacement throughout buffer."
+  "Perform regular-expression replacement throughout buffer.
+PATTERN: pattern to search
+REPLACEMENT: replacement for pattern"
   (save-excursion
     (goto-char (point-min))
     (while (re-search-forward pattern nil t)
       (replace-match replacement))))
 
 (defun flymake-tldr-lint-remove-broken-ellipsis()
-  "Remove {{...}}
-placeholders in the current buffer."
+  "Remove broken ellipsis placeholder.
+Remove {{...}} placeholders in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
     (flymake-tldr-lint--replace-regexp-entire-buffer
       "[ ]*{{\\.\\{3\\}}}[ ]*"
       "")
-    (message "Save file to update list of TlDr errors")
-  )
-)
+    (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-remove-broken-numbers()
-  "Replace {{placeholder_number}}
+  "Remove broken numbers in placeholders.
+Replace {{placeholder_number}}
 placeholders with {{placeholder}} in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
@@ -76,7 +79,8 @@ placeholders with {{placeholder}} in the current buffer."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-remove-broken-files()
-  "Remove {{file}}, {{filename}}, and {{file_name}}
+  "Remove broken file placeholders.
+Remove {{file}}, {{filename}}, and {{file_name}}
 placeholders in the current buffer.
 Trailing numbers are respected too."
   (interactive)
@@ -87,7 +91,8 @@ Trailing numbers are respected too."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-remove-broken-directories()
-  "Remove {{dir}}, {{dirname}}, {{dir_name}},
+  "Remove broken directory placeholders.
+Remove {{dir}}, {{dirname}}, {{dir_name}},
 {{directory}}, {{directoryname}}, and {{directory_name}}
 placeholders in the current buffer.
 Trailing numbers are respected too."
@@ -107,7 +112,8 @@ Trailing numbers are respected too."
   (flymake-tldr-lint-remove-broken-directories))
 
 (defun flymake-tldr-lint-correct-broken-ellipsis()
-  "Replace {{placeholdernumber1}} {{placeholdernumber2}} ...
+  "Correct broken ellipsis placeholder.
+Replace {{placeholdernumber1}} {{placeholdernumber2}} ...
 placeholders with {{placeholdernumber1 placeholdernumber2 ...}}
 in the current buffer."
   (interactive)
@@ -118,7 +124,8 @@ in the current buffer."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-correct-broken-numbers()
-  "Replace {{placeholder_number}}
+  "Correct broken numbers in placeholders.
+Replace {{placeholder_number}}
 placeholders with {{placeholdernumber}} in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
@@ -127,7 +134,8 @@ placeholders with {{placeholdernumber}} in the current buffer."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-correct-broken-files()
-  "Replace {{file}}, {{filename}}, and {{file_name}}
+  "Remove broken file placeholders.
+Replace {{file}}, {{filename}}, and {{file_name}}
 placeholders with {{path/to/file}} in the current buffer.
 Trailing numbers are respected too."
   (interactive)
@@ -138,7 +146,8 @@ Trailing numbers are respected too."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-correct-broken-directories()
-  "Replace {{dir}}, {{dirname}}, {{dir_name}},
+  "Remove broken directory placeholders.
+Replace {{dir}}, {{dirname}}, {{dir_name}},
 {{directory}}, {{directoryname}}, and {{directory_name}}
 placeholders with {{path/to/directory}} in the current buffer.
 Trailing numbers are respected too."
@@ -150,7 +159,8 @@ Trailing numbers are respected too."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-correct-broken-ranges()
-  "Replace {{from-to}} placeholders with {{from..to}} in the current buffer.
+  "Remove broken range placeholders.
+Replace {{from-to}} placeholders with {{from..to}} in the current buffer.
 If `from` or `to` is missing then
 it's replaced with negative or positive infinity respectively."
   (interactive)
@@ -170,7 +180,8 @@ it's replaced with negative or positive infinity respectively."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-correct-broken-long-option-argument()
-  "Replace --option option syntax with --option any in the current buffer."
+  "Reduce term duplication for option-argument pair.
+Replace --option option syntax with --option any in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
     (flymake-tldr-lint--replace-regexp-entire-buffer
@@ -189,7 +200,8 @@ it's replaced with negative or positive infinity respectively."
   (flymake-tldr-lint-correct-broken-long-option-argument))
 
 (defun flymake-tldr-lint-convert-long-option-space-separated()
-  "Replace --option=value syntax with --option value any in the current buffer."
+  "Convert long option-argument pair to space separated.
+Replace --option=value syntax with --option value any in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
     (flymake-tldr-lint--replace-regexp-entire-buffer
@@ -204,7 +216,8 @@ it's replaced with negative or positive infinity respectively."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-convert-long-option-equal-sign-separated()
-  "Replace --option value syntax with --option=value any in the current buffer."
+  "Convert long option-argument pair to sign separated.
+Replace --option value syntax with --option=value any in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
     (flymake-tldr-lint--replace-regexp-entire-buffer
@@ -219,7 +232,7 @@ it's replaced with negative or positive infinity respectively."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint--backend (report-fn &rest _args)
-  "tldr-lint backend for Flymake.
+  "TlDr lint backend for Flymake.
 Check for problems, then call REPORT-FN with results."
   (unless (executable-find flymake-tldr-lint-program)
     (error "Could not find tldr-lint executable"))
@@ -272,7 +285,7 @@ Check for problems, then call REPORT-FN with results."
 ;;;###autoload
 (defun flymake-tldr-lint-load ()
   "Add the tldr-lint backend into Flymake's diagnostic functions list."
-  (add-hook 'flymake-diagnostic-functions 'flymake-tldr-lint--backend nil t))
+  (add-hook #'flymake-diagnostic-functions #'flymake-tldr-lint--backend nil t))
 
 (provide 'flymake-tldr-lint)
 
