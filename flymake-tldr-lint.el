@@ -32,12 +32,12 @@
 (require 'flymake)
 
 (defgroup flymake-tldr-lint nil
-  "tldr-lint backend for Flymake."
+  "TlDr linter backend for Flymake."
   :prefix "flymake-tldr-lint-"
   :group 'tools)
 
 (defcustom flymake-tldr-lint-program "tldr-lint"
-  "The name of the `tldr-lint' executable."
+  "The name of the TlDr linter executable."
   :type 'string)
 
 (defcustom flymake-tldr-lint-ignored ""
