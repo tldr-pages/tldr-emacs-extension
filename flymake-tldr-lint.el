@@ -1,8 +1,6 @@
 ;;; flymake-tldr-lint.el --- A TlDr Flymake backend powered by tldr-lint  -*- lexical-binding: t; -*-
 
 ;; Copyright (c) 2022 Emily Grace Seville <EmilySeville7cfg@gmail.com>
-
-;; Copyright (c) 2022 Emily Grace Seville <EmilySeville7cfg@gmail.com>
 ;; Version: 0.3
 ;; Package-Requires: ((emacs "27.1"))
 
