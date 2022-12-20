@@ -3,7 +3,7 @@
 ;; Copyright (c) 2022 Emily Grace Seville <EmilySeville7cfg@gmail.com>
 
 ;; Copyright (c) 2022 Emily Grace Seville <EmilySeville7cfg@gmail.com>
-;; Version: 0.1
+;; Version: 0.3
 ;; Package-Requires: ((emacs "27.1"))
 
 ;; This program is free software; you can redistribute it and/or modify
