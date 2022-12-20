@@ -52,7 +52,7 @@ Example `~/.emacs` config:
 
 ## Starting fixing
 
-> ⚠️ `tldr` prefix was replaced with `flymake-tldr-lint-` in actions.
+> ⚠️ `tldr-` prefix was replaced with `flymake-tldr-lint-` in actions.
 
 To speed up fixing TlDr pages several examples provided for each code fix down below:
 
