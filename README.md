@@ -52,46 +52,48 @@ Example `~/.emacs` config:
 
 ## Starting fixing
 
+> ⚠️ `tldr` prefix was replaced with `flymake-tldr-lint-` in actions.
+
 To speed up fixing TlDr pages several examples provided for each code fix down below:
 
-- Action: `tldr-remove-broken-ellipsis`
+- Action: `flymake-tldr-lint-remove-broken-ellipsis`
   Input: `command {{...}}`
   Result: `command`
-- Action: `tldr-remove-broken-numbers`
+- Action: `flymake-tldr-lint-remove-broken-numbers`
   Input: `command {{path/to/file_1}}`
   Result: `command {{path/to/file}}`
-- Action: `tldr-remove-broken-files`
+- Action: `flymake-tldr-lint-remove-broken-files`
   Input: `command {{file}}`
   Result: `command`
-- Action: `tldr-remove-broken-directories`
+- Action: `flymake-tldr-lint-remove-broken-directories`
   Input: `command {{dir}}`
   Result: `command`
-- Action: `tldr-correct-broken-ellipsis`
+- Action: `flymake-tldr-lint-correct-broken-ellipsis`
   Input: `command {{path/to/file1}} {{path/to/file2}} {{path/to/file3}}`
   Result: `command {{path/to/file1 path/to/file2 ...}}`
-- Action: `tldr-correct-broken-numbers`
+- Action: `flymake-tldr-lint-correct-broken-numbers`
   Input: `command {{path/to/file_1}}`
   Result: `command {{path/to/file1}}`
-- Action: `tldr-correct-broken-files`
+- Action: `flymake-tldr-lint-correct-broken-files`
   Input: `command {{file}}`
   Result: `command {{path/to/file}}`
-- Action: `tldr-correct-broken-directories`
+- Action: `flymake-tldr-lint-correct-broken-directories`
   Input: `command {{dir}}`
   Result: `command {{path/to/directory}}`
-- Action: `tldr-correct-broken-ranges`
+- Action: `flymake-tldr-lint-correct-broken-ranges`
   Input: `command {{1-10}}`
   Result: `command {{1..10}}`
-- Action: `tldr-correct-broken-long-option-argument`
+- Action: `flymake-tldr-lint-correct-broken-long-option-argument`
   Input: `command --option {{option}}`
   Result: `command --option {{any}}`
-- Action: `tldr-convert-long-option-space-separated`
+- Action: `flymake-tldr-lint-convert-long-option-space-separated`
   Input: `command --option={{any}}`
   Result: `command --option {{any}}`
-- Action: `tldr-convert-long-option-equal-sign-separated`
+- Action: `flymake-tldr-lint-convert-long-option-equal-sign-separated`
   Input: `command --option {{any}}`
   Result: `command --option={{any}}`
-- Action: `tldr-remove-broken-all`
-- Action: `tldr-correct-broken-all`
+- Action: `flymake-tldr-lint-remove-broken-all`
+- Action: `flymake-tldr-lint-correct-broken-all`
 
 ⚠️ Note that all actions are regex-based substitutions. If you need more smart behaviour use TlDr extensions for another editor.
 
@@ -139,7 +141,7 @@ For instace we have the following `tar` page:
 `tar xf {{source.tar}} --wildcards "{{*.html}}"`
 ```
 
-To fix all fixable issues at once we can use `M-x tldr-correct-broken-all` command. The result is as follows:
+To fix all fixable issues at once we can use `M-x flymake-tldr-lint-correct-broken-all` command. The result is as follows:
 
 ```md
 # tar
@@ -198,6 +200,6 @@ Settings:
 ## FAQ
 
 - Can I remove broken placeholders automatically?
-  This can be done via all `tldr-remove-broken-*` actions.
+  This can be done via all `flymake-tldr-lint-remove-broken-*` actions.
 - Can I fix broken placeholders automatically?
-  This can be done via all `tldr-correct-broken-*` actions.
+  This can be done via all `flymake-tldr-lint-correct-broken-*` actions.
