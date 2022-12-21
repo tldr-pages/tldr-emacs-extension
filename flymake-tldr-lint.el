@@ -218,28 +218,20 @@ Replace --option option syntax with --option any in the current buffer."
           (push option-list option-lists))))
     (dolist (description descriptions) ;; remove all existing mnemonics
       (push (replace-regexp-in-string "\\[\\([[:alpha:]]+\\)\\]" "\\1" description) new-descriptions))
-    
-    (message (format "option-lists: %s | descriptions: %s" option-lists descriptions))
 
     (dotimes (i (length new-descriptions)) ;; building descriptions with new mnemonics
       (dolist (option (elt option-lists i))
         (setq result (elt new-descriptions i))
-
-        (message (format "BEFORE option: %s | result: %s" option result))
 
         (setq old-result result)
         (setq result (replace-regexp-in-string (concat "\\(" option "\\)[[:alpha:]]+.*\\'") (concat "[" option "]") result nil nil 1))
         (if (string= result old-result)
           (setq result (replace-regexp-in-string (concat "[[:alpha:]]+\\(" option "\\).*\\'") (concat "[" option "]") result nil nil 1)))
         
-        (message (format "AFTER option: %s | result: %s" option result))
         (setf (nth i new-descriptions) result)))
-    
-    (message (format "new-descriptions: %s" new-descriptions))
     
     (dotimes (i (length new-descriptions))
       (with-current-buffer (current-buffer)
-        (message (format "REPLACE %s WITH %s" (elt descriptions i) (elt new-descriptions i)))
         (flymake-tldr-lint--replace-regexp-entire-buffer
           (elt descriptions (- (length descriptions) i 1))
           (elt new-descriptions i))))
