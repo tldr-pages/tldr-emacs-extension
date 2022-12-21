@@ -347,7 +347,7 @@ Check for problems, then call REPORT-FN with results."
 ;;;###autoload
 (defun flymake-tldr-lint-load()
   "Add the tldr-lint backend into Flymake's diagnostic functions list."
-  (add-hook #'flymake-diagnostic-functions #'flymake-tldr-lint--backend nil t))
+  (add-hook 'flymake-diagnostic-functions #'flymake-tldr-lint--backend nil t))
 
 (provide 'flymake-tldr-lint)
 
