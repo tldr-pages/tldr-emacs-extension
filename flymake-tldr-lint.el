@@ -258,7 +258,8 @@ Replace --option option syntax with --option any in the current buffer."
   (flymake-tldr-lint-correct-broken-directories)
   (flymake-tldr-lint-correct-broken-ranges)
   (flymake-tldr-lint-correct-broken-ellipsis)
-  (flymake-tldr-lint-correct-broken-long-option-argument))
+  (flymake-tldr-lint-correct-broken-long-option-argument)
+  (flymake-tldr-lint-correct-broken-mnemonics))
 
 (defun flymake-tldr-lint-convert-long-option-space-separated()
   "Convert long option-argument pair to space separated.
