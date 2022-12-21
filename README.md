@@ -86,6 +86,23 @@ To speed up fixing TlDr pages several examples provided for each code fix down b
 - Action: `flymake-tldr-lint-correct-broken-long-option-argument`
   Input: `command --option {{option}}`
   Result: `command --option {{any}}`
+- Action: `flymake-tldr-lint-correct-broken-mnemonics`
+  Input:
+
+  ```md
+  - Invoke command with option used:
+
+  `command -opt {{option}}`
+  ```
+
+  Result:
+
+  ```md
+  - Invoke command with [opt]ion used:
+
+  `command -opt {{option}}`
+  ```
+
 - Action: `flymake-tldr-lint-convert-long-option-space-separated`
   Input: `command --option={{any}}`
   Result: `command --option {{any}}`
