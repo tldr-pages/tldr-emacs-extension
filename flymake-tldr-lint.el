@@ -205,7 +205,9 @@ Replace --option option syntax with --option any in the current buffer."
       (while (re-search-forward command-pattern nil t)
         (push (match-string 0) commands)))
     (if (not (equal (length descriptions) (length commands)))
-      (error (format "Code example count (%d) is not equal to description count (%d)." (length commands) (length descriptions))))
+      (error (format "Code example count (%d) is not equal to description count (%d)."
+        (length commands)
+        (length descriptions))))
     
     (dolist (command commands) ;; extract short and long options
       (with-temp-buffer
@@ -217,16 +219,26 @@ Replace --option option syntax with --option any in the current buffer."
             (push (match-string 1) option-list))
           (push option-list option-lists))))
     (dolist (description descriptions) ;; remove all existing mnemonics
-      (push (replace-regexp-in-string "\\[\\([[:alpha:]]+\\)\\]" "\\1" description) new-descriptions))
+      (push (replace-regexp-in-string "\\[\\([[:alpha:]]+\\)\\]"
+        "\\1"
+        description)
+        new-descriptions))
 
     (dotimes (i (length new-descriptions)) ;; building descriptions with new mnemonics
       (dolist (option (elt option-lists i))
         (setq result (elt new-descriptions i))
 
         (setq old-result result)
-        (setq result (replace-regexp-in-string (concat "\\(" option "\\)[[:alpha:]]+.*\\'") (concat "[" option "]") result nil nil 1))
+        (setq result (replace-regexp-in-string (concat "\\("
+                                                  option
+                                                  "\\)[[:alpha:]]+.*\\'")
+                        (concat "[" option "]") result nil nil 1))
         (if (string= result old-result)
-          (setq result (replace-regexp-in-string (concat "[[:alpha:]]+\\(" option "\\).*\\'") (concat "[" option "]") result nil nil 1)))
+          (setq result (replace-regexp-in-string (concat
+                                                    "[[:alpha:]]+\\("
+                                                    option
+                                                    "\\).*\\'")
+                          (concat "[" option "]") result nil nil 1)))
         
         (setf (nth i new-descriptions) result)))
     
