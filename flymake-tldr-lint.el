@@ -144,7 +144,7 @@ Trailing numbers are respected too."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-correct-broken-directories()
-  "Remove broken directory placeholders.
+  "Correct broken directory placeholders.
 Replace {{dir}}, {{dirname}}, {{dir_name}},
 {{directory}}, {{directoryname}}, and {{directory_name}}
 placeholders with {{path/to/directory}} in the current buffer.
@@ -157,7 +157,7 @@ Trailing numbers are respected too."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-correct-broken-ranges()
-  "Remove broken range placeholders.
+  "Correct broken range placeholders.
 Replace {{from-to}} placeholders with {{from..to}} in the current buffer.
 If `from` or `to` is missing then
 it's replaced with negative or positive infinity respectively."
@@ -178,13 +178,72 @@ it's replaced with negative or positive infinity respectively."
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-correct-broken-long-option-argument()
-  "Reduce term duplication for option-argument pair.
+  "Correct term duplication for option-argument pair.
 Replace --option option syntax with --option any in the current buffer."
   (interactive)
   (with-current-buffer (current-buffer)
     (flymake-tldr-lint--replace-regexp-entire-buffer
       "--\\([A-Za-z0-9]\\{2,\\}\\)[ ]+\\([\"']?\\)\\1\\2"
       "--\\1 \\2any\\2")
+    (message "Save file to update list of TlDr errors")))
+
+(defun flymake-tldr-lint-correct-broken-mnemonics ()
+  "Correct broken mnemonics in description."
+  (interactive)
+  (let ((description-pattern "^- .*:$")
+      (command-pattern "^`[^`]+`$")
+      (descriptions '())
+      (new-descriptions '())
+      (commands '())
+      (option-lists '()))
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward description-pattern nil t)
+        (push (match-string 0) descriptions)))
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward command-pattern nil t)
+        (push (match-string 0) commands)))
+    (if (not (equal (length descriptions) (length commands)))
+      (error (format "Code example count (%d) is not equal to description count (%d)." (length commands) (length descriptions))))
+    
+    (dolist (command commands) ;; extract short and long options
+      (with-temp-buffer
+        (let ((option-pattern "--?\\([[:alnum:]]+\\)")
+            (option-list '()))
+          (insert command)
+          (goto-char (point-min))
+          (while (re-search-forward option-pattern nil t)
+            (push (match-string 1) option-list))
+          (push option-list option-lists))))
+    (dolist (description descriptions) ;; remove all existing mnemonics
+      (push (replace-regexp-in-string "\\[\\([[:alpha:]]+\\)\\]" "\\1" description) new-descriptions))
+    
+    (message (format "option-lists: %s | descriptions: %s" option-lists descriptions))
+
+    (dotimes (i (length new-descriptions)) ;; building descriptions with new mnemonics
+      (dolist (option (elt option-lists i))
+        (setq result (elt new-descriptions i))
+
+        (message (format "BEFORE option: %s | result: %s" option result))
+
+        (setq old-result result)
+        (setq result (replace-regexp-in-string (concat "\\(" option "\\)[[:alpha:]]+.*\\'") (concat "[" option "]") result nil nil 1))
+        (if (string= result old-result)
+          (setq result (replace-regexp-in-string (concat "[[:alpha:]]+\\(" option "\\).*\\'") (concat "[" option "]") result nil nil 1)))
+        
+        (message (format "AFTER option: %s | result: %s" option result))
+        (setf (nth i new-descriptions) result)))
+    
+    (message (format "new-descriptions: %s" new-descriptions))
+    
+    (dotimes (i (length new-descriptions))
+      (with-current-buffer (current-buffer)
+        (message (format "REPLACE %s WITH %s" (elt descriptions i) (elt new-descriptions i)))
+        (flymake-tldr-lint--replace-regexp-entire-buffer
+          (elt descriptions (- (length descriptions) i 1))
+          (elt new-descriptions i))))
+
     (message "Save file to update list of TlDr errors")))
 
 (defun flymake-tldr-lint-correct-broken-all()
