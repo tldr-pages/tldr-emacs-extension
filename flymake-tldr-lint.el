@@ -187,7 +187,7 @@ Replace --option option syntax with --option any in the current buffer."
       "--\\1 \\2any\\2")
     (message "Save file to update list of TlDr errors")))
 
-(defun flymake-tldr-lint-correct-broken-mnemonics ()
+(defun flymake-tldr-lint-correct-broken-mnemonics()
   "Correct broken mnemonics in description."
   (interactive)
   (let ((description-pattern "^- .*:$")
@@ -280,7 +280,7 @@ Replace --option value syntax with --option=value any in the current buffer."
       "--\\1='\\2'")
     (message "Save file to update list of TlDr errors")))
 
-(defun flymake-tldr-lint--backend (report-fn &rest _args)
+(defun flymake-tldr-lint--backend(report-fn &rest _args)
   "TlDr lint backend for Flymake.
 Check for problems, then call REPORT-FN with results."
   (unless (executable-find flymake-tldr-lint-program)
@@ -332,7 +332,7 @@ Check for problems, then call REPORT-FN with results."
               (kill-buffer (process-buffer proc))))))))))
 
 ;;;###autoload
-(defun flymake-tldr-lint-load ()
+(defun flymake-tldr-lint-load()
   "Add the tldr-lint backend into Flymake's diagnostic functions list."
   (add-hook #'flymake-diagnostic-functions #'flymake-tldr-lint--backend nil t))
 
