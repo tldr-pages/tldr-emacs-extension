@@ -224,6 +224,9 @@ Replace --option option syntax with --option any in the current buffer."
         description)
         new-descriptions))
 
+    (defvar result nil)
+    (defvar old-result nil)
+
     (dotimes (i (length new-descriptions)) ;; building descriptions with new mnemonics
       (dolist (option (elt option-lists i))
         (setq result (elt new-descriptions i))
