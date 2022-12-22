@@ -205,9 +205,9 @@ Replace --option option syntax with --option any in the current buffer."
       (while (re-search-forward command-pattern nil t)
         (push (match-string 0) commands)))
     (if (not (equal (length descriptions) (length commands)))
-      (error (format "Code example count (%d) is not equal to description count (%d)."
+      (error "Code example count (%d) is not equal to description count (%d)."
         (length commands)
-        (length descriptions))))
+        (length descriptions)))
     
     (dolist (command commands) ;; extract short and long options
       (with-temp-buffer
